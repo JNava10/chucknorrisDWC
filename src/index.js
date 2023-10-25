@@ -1,6 +1,5 @@
-import {Category} from "./model/Category";
+import {CONSTANTS} from "./constants.js";
 
-const API_URL = "https://api.chucknorris.io/jokes";
 const CATEGORY_TABLE = document.querySelector("#categories");
 
 async function fetchCategories(url) {
@@ -25,20 +24,23 @@ async function fetchCategories(url) {
  */
 
 onload = async function () {
-    const CATEGORIES = await fetchCategories(API_URL + "/categories");
-    console.log(CATEGORIES);
+    let categories = await fetchCategories(CONSTANTS.apiUrl + "/categories");
 
-    CATEGORIES.forEach(function (category) {
+    categories.forEach(function (category) {
         let categoryRow = document.createElement("tr");
         let categoryAnchor = document.createElement('a');
 
         categoryAnchor.href = './frase.html';
         categoryAnchor.textContent = category;
         categoryAnchor.onclick = function () {
-            window.location.href = "frase.html";
+            if (category) {
+                localStorage.setItem(CONSTANTS.categoryStorageKey, category);
+                window.location.href = "frase.html";
+            }
         };
 
         CATEGORY_TABLE.appendChild(categoryRow);
         categoryRow.appendChild(categoryAnchor);
     });
-}
+};
+

@@ -9,8 +9,16 @@ const JOKE_DIV = document.querySelector("#frase");
  * @param category {String}
  * @returns {Joke}
  */
-async function fetchJoke(category) {
-    let response = await fetch(`${CONSTANTS.apiUrl}/random?category=${category}`);
+async function fetchJoke(category = null) {
+    let response;
+
+    if (category) {
+        response = await fetch(`${CONSTANTS.apiUrl}/random?category=${category}`);
+    } else {
+        console.log('a');
+        response = await fetch(`${CONSTANTS.apiUrl}/random`);
+    }
+
     let data = await response.json();
 
     console.log(data);
@@ -26,17 +34,21 @@ async function fetchJoke(category) {
 }
 
 onload = async function () {
-    let categoryHeader = document.createElement('h1');
+    let categoryHeader;
     let jokeSpan = document.createElement('span');
     let creationSub = document.createElement('sub');
     let category = localStorage.getItem(CONSTANTS.categoryStorageKey);
     let joke = await fetchJoke(category);
 
-    categoryHeader.textContent = CATEGORY.toString();
+    if (category) {
+        categoryHeader = document.createElement('h1');
+        categoryHeader.textContent = CATEGORY.toString();
+        JOKE_DIV.appendChild(categoryHeader);
+    }
+
     jokeSpan.textContent = joke.value;
     creationSub.textContent = ` ${joke.createdAt}`;
 
-    JOKE_DIV.appendChild(categoryHeader);
     JOKE_DIV.appendChild(jokeSpan);
     JOKE_DIV.appendChild(creationSub);
 };

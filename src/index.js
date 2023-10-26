@@ -1,6 +1,7 @@
 import {CONSTANTS} from "./constants.js";
 
 const CATEGORY_TABLE = document.querySelector("#categories");
+const FRASE_ALEATORIA_BOTON = document.querySelector('#fraseAleatoriaBoton');
 
 async function fetchCategories(url) {
     let data;
@@ -44,3 +45,6 @@ onload = async function () {
     });
 };
 
+FRASE_ALEATORIA_BOTON.onclick = function () {
+    window.location.href = "frase.html";
+};
